@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artística-Vaca - Crea y Emprende</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+        :root {
+            --dark: #1A171B;
+            --purple: #B5489F;
+            --pink: #F781B4;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark);
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .bg-brand-dark { background-color: var(--dark); }
+        .bg-brand-purple { background-color: var(--purple); }
+        .bg-brand-pink { background-color: var(--pink); }
+        .text-brand-pink { color: var(--pink); }
+        .text-brand-purple { color: var(--purple); }
+        
+        .border-brand-purple { border-color: var(--purple); }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(181, 72, 159, 0.4);
+        }
+
+        .card-service {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .card-service:hover {
+            border-color: var(--pink);
+            transform: translateY(-5px);
+        }
+
+        .glass-nav {
+            background: rgba(26, 23, 27, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-image {
+            background-image: linear-gradient(rgba(26, 23, 27, 0.6), rgba(26, 23, 27, 0.6)), url('https://images.unsplash.com/photo-1459908676235-d5f02a50184b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 23, 27, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+        }
+
+        .map-container:hover .map-overlay { opacity: 1; }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23F781B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5em;
+        }
+
+        select option { background-color: var(--dark); color: white; }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            min-width: 100%;
+            aspect-ratio: 16 / 9;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-50 glass-nav border-b border-white/10">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center relative">
+            <div class="flex items-center space-x-3">
+                <img src="img/logo.jpg" alt="Logo Artística-Vaca" class="h-12 w-12 rounded-full border-2 border-brand-pink object-cover">
+                <span class="text-xl font-bold tracking-wider uppercase">Artística-Vaca</span>
+            </div>
+            
+            <div id="navMenu" class="hidden md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-[#1A171B] md:bg-transparent p-8 md:p-0 space-y-6 md:space-y-0 md:space-x-8 font-medium shadow-2xl border-b border-white/10 md:border-none z-50">
+                <a href="#inicio" class="nav-link hover:text-brand-pink transition text-sm uppercase tracking-widest">Inicio</a>
+                <a href="#cursos" class="nav-link hover:text-brand-pink transition text-sm uppercase tracking-widest">Cursos</a>
+                <a href="https://maps.app.goo.gl/hDHoJrhNtxSvAVdE7" target="_blank" class="nav-link hover:text-brand-pink transition text-sm uppercase tracking-widest">Cómo llegar</a>
+                <a href="#contacto" class="nav-link hover:text-brand-pink transition text-sm uppercase tracking-widest">Contacto</a>
+            </div>
+
+            <button id="menuBtn" class="md:hidden text-2xl text-brand-pink focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero-image h-screen flex items-center justify-center text-center px-6">
+        <div class="max-w-3xl">
+            <h1 class="text-5xl md:text-7xl mb-6 leading-tight">Crea con tus <span class="text-brand-pink italic underline decoration-brand-purple/30">manos.</span></h1>
+            <p class="text-lg md:text-xl mb-10 text-gray-300">Descubre nuestros talleres y encuentra todos los materiales para llevar tu pasión a casa. Ramos Mejía tiene un nuevo espacio creativo.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#cursos" class="btn-gradient px-8 py-4 rounded-full font-bold text-lg text-center uppercase tracking-widest">Ver Talleres</a>
+                <a href="https://maps.app.goo.gl/hDHoJrhNtxSvAVdE7" target="_blank" class="border border-white/30 hover:bg-white/10 px-8 py-4 rounded-full font-bold text-lg transition text-center uppercase tracking-widest">Cómo llegar</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-brand-dark overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="md:w-1/2 relative">
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-brand-purple/20 rounded-full blur-3xl"></div>
+                    <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Taller Artística-Vaca" class="rounded-2xl shadow-2xl relative z-10 border border-white/10">
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-4xl mb-6 italic font-bold">Aprende la técnica, <span class="text-brand-pink">llévate el material.</span></h2>
+                    <p class="text-gray-400 mb-6 text-lg leading-relaxed">
+                        Nacimos para ser el puente entre tu curiosidad y tu propia creación. No solo dictamos cursos; proveemos las herramientas profesionales para que cada alumno pueda emprender su propio camino artístico.
+                    </p>
+                    <p class="text-gray-400 mb-8 text-lg leading-relaxed">
+                        Desde <strong>Ramos Mejía</strong>, ofrecemos una amplia variedad de técnicas tradicionales y modernas. Todo lo que usamos en clase está disponible en nuestra tienda.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white/5 p-4 rounded-xl border-l-4 border-brand-pink">
+                            <h4 class="font-bold text-2xl text-brand-pink">13+</h4>
+                            <p class="text-xs text-gray-500 uppercase tracking-tighter">Talleres Activos</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-xl border-l-4 border-brand-purple">
+                            <h4 class="font-bold text-2xl text-brand-purple">Insumos</h4>
+                            <p class="text-xs text-gray-500 uppercase tracking-tighter">Stock Permanente</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cursos" class="py-24 bg-black/30">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl mb-4 font-bold uppercase tracking-widest">Nuestra Oferta Académica</h2>
+                <div class="h-1 w-24 bg-brand-pink mx-auto mb-6"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto italic">Encuentra la técnica que más te apasione.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Cerámica')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://ceramicasivanros.com/img/cms/pintura%20cer%C3%A1mica.JPG" alt="Cerámica" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Cerámica</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Martes: 15:00 a 17:00 y 17:30 a 19:30</div>
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Miércoles: 9:30 a 11:30</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Modelado y esmaltado de piezas únicas.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Puntillismo')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://emborg.com.ar/wp-content/uploads/2018/10/descarga-1.jpg" alt="Puntillismo" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Puntillismo</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Jueves: 9:30 a 11:30 y 15:00 a 17:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Mandalas y decoración mediante puntos de color.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Mosaiquismo')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://www.madariaga.gob.ar/fotos/madariaga/noticias/masaiquismo.jpg" alt="Mosaiquismo" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Mosaiquismo</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Lunes: 15:00 a 17:00</div>
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Jueves: 17:00 a 19:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Arte con fragmentos, azulejos y venecitas.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Pintura sobre lienzo')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://st3.depositphotos.com/12531278/19203/i/450/depositphotos_192036868-stock-photo-artist-drawing-process-canvas-art.jpg" alt="Pintura Lienzo" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Pintura s/ Lienzo</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Martes: 9:30 a 11:30</div>
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Viernes: 16:00 a 18:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Técnicas de acrílico y óleo tradicionales.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Resina')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTneaSOzUbNMy2BC2ECiHrloDDW8UiozQmlow&s" alt="Resina" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Curso de Resina</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Miércoles: 17:00 a 19:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Encapsulados y acabados vidriados modernos.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Taller de pintura')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Taller Pintura" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Taller de Pintura</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Martes: 9:30 a 11:30</div>
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Viernes: 16:00 a 18:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Espacio de libre expresión y guía técnica.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Taller de textura con espátula')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8QCfWO0LF-SSVZz5yOXyICSl44FoiwlSE5g&s" alt="Textura Espátula" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Textura c/ Espátula</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Miércoles: 15:00 a 17:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Volumen y relieve aplicados al arte visual.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Taller creativo (niños 8 a 12 años)')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Taller Niños" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Taller Creativo</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Lunes: 17:30 a 18:30</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Niños de 8 a 12 años. Juego y arte.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Crochet')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Crochet" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Crochet</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Lunes-Miércoles</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Tejido con una aguja. Puntos básicos y avanzados.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Dos agujas')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://media.todojujuy.com/p/a0ccca56baae32ff92b4750fecf0bdb3/adjuntos/227/imagenes/003/351/0003351937/1200x675/smart/tejidos-dos-agujasjpg.jpg" alt="Dos Agujas" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Dos Agujas</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Lunes-Miércoles</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Tejido tradicional para prendas y accesorios.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Macrame')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://sakalhome.com/cdn/shop/articles/comprar_macrame_2.webp?v=1694128820" alt="Macrame" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Macramé</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Jueves: 9:30 a 11:30</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Nudos decorativos para tapices y objetos.</p>
+                    </div>
+                </div>
+
+                <div class="card-service rounded-2xl overflow-hidden group flex flex-col" onclick="seleccionarCurso('Amigurumis')">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://www.ecocitex.cl/cdn/shop/files/WhatsAppImage2025-03-12at13.20.15_5000x.jpg?v=1741975943" alt="Amigurumis" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl mb-2 font-bold text-brand-pink">Amigurumis</h3>
+                        <div class="schedule-list">
+                            <div class="schedule-item"><i class="fas fa-calendar-day"></i> Jueves: 15:00 a 17:00</div>
+                        </div>
+                        <p class="text-sm text-gray-400">Creación de muñecos tejidos rellenos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-brand-dark">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl mb-4 font-bold uppercase tracking-widest italic">Nuestro espacio de trabajo</h2>
+                <div class="h-1 w-24 bg-brand-purple mx-auto mb-6"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Un ambiente cálido y luminoso diseñado para potenciar tu creatividad.
+                </p>
+            </div>
+
+            <div class="carousel-container rounded-3xl shadow-2xl border border-white/10 group">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-item"><img src="img/3.jpeg" class="w-full h-full object-cover" alt="1"></div>
+                    <div class="carousel-item"><img src="img/2.jpeg" class="w-full h-full object-cover" alt="2"></div>
+                    <div class="carousel-item"><img src="img/4.jpeg" class="w-full h-full object-cover" alt="3"></div>
+                    <div class="carousel-item"><img src="img/1.jpeg" class="w-full h-full object-cover" alt="4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="productos" class="py-24 bg-brand-dark">
+        <div class="container mx-auto px-6">
+            <div class="bg-gradient-to-r from-brand-purple to-brand-pink p-1 rounded-3xl">
+                <div class="bg-brand-dark rounded-[calc(1.5rem-4px)] p-12 text-center">
+                    <h2 class="text-4xl mb-6 italic">Todo lo que necesitas</h2>
+                    <p class="text-xl text-gray-300 mb-10 max-w-3xl mx-auto">Insumos oficiales en Ramos Mejía.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10"><i class="fas fa-mitten text-3xl text-brand-pink mb-4"></i><h4 class="text-xs uppercase">Hilados</h4></div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10"><i class="fas fa-brush text-3xl text-brand-purple mb-4"></i><h4 class="text-xs uppercase">Pincelería</h4></div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10"><i class="fas fa-vials text-3xl text-brand-pink mb-4"></i><h4 class="text-xs uppercase">Acrílicos</h4></div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10"><i class="fas fa-shapes text-3xl text-brand-purple mb-4"></i><h4 class="text-xs uppercase">Accesorios</h4></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-24 bg-black/50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-6xl mx-auto text-center mb-16">
+                <h2 class="text-4xl mb-4 italic">¡Anotate!</h2>
+                <div class="h-1 w-16 bg-brand-pink mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="space-y-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-left">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-brand-purple/20 p-3 rounded-lg text-brand-pink"><i class="fas fa-map-marker-alt"></i></div>
+                            <div><h4 class="font-bold">Medrano 752</h4><p class="text-gray-400 text-sm">Ramos Mejía</p></div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-brand-purple/20 p-3 rounded-lg text-brand-pink"><i class="fab fa-whatsapp"></i></div>
+                            <div><h4 class="font-bold text-sm uppercase">WhatsApp</h4><p class="text-gray-400 text-sm">11 3511-0909</p></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10 space-y-6 text-left relative">
+                        <div class="relative z-10">
+                            <h3 class="text-xl mb-2 font-bold text-brand-pink">Selecciona tu técnica</h3>
+                            
+                            <select id="cursoSelect" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-brand-pink outline-none mt-4">
+                                <optgroup label="Cursos Tradicionales">
+                                    <option value="Cerámica">Cerámica</option>
+                                    <option value="Puntillismo">Puntillismo</option>
+                                    <option value="Mosaiquismo">Mosaiquismo</option>
+                                    <option value="Pintura sobre lienzo">Pintura sobre lienzo</option>
+                                    <option value="Resina">Resina</option>
+                                </optgroup>
+                                <optgroup label="Nuevos Talleres">
+                                    <option value="Taller de pintura">Taller de pintura</option>
+                                    <option value="Taller de textura con espátula">Taller de textura con espátula</option>
+                                    <option value="Taller creativo (niños 8 a 12 años)">Taller creativo (niños 8 a 12 años)</option>
+                                </optgroup>
+                                <optgroup label="Tejido y Textiles">
+                                    <option value="Crochet">Crochet</option>
+                                    <option value="Dos agujas">Dos agujas</option>
+                                    <option value="Macrame">Macramé</option>
+                                    <option value="Amigurumis">Amigurumis</option>
+                                </optgroup>
+                            </select>
+
+                            <a id="waButton" href="#" target="_blank" class="w-full btn-gradient py-5 rounded-xl font-bold uppercase flex items-center justify-center gap-3 text-lg mt-8">
+                                <i class="fab fa-whatsapp text-2xl"></i> Consultar Ahora
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6 text-left">
+                    <a href="https://maps.app.goo.gl/hDHoJrhNtxSvAVdE7" target="_blank" class="map-container block group">
+                        <div class="relative h-[450px] w-full bg-gray-900">
+                            <img src="img/maps.png" alt="Maps" class="w-full h-full object-cover opacity-40">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <i class="fas fa-map-marker-alt text-6xl text-brand-pink animate-bounce"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/10 text-center text-gray-500 bg-brand-dark">
+        <div class="container mx-auto px-6">
+            <img src="img/logo.jpg" alt="Logo" class="h-16 w-16 mx-auto mb-6 rounded-full">
+            <p>© 2026 Artística-Vaca</p>
+        </div>
+    </footer>
+
+    <script>
+        // Función para seleccionar curso y redirigir
+        function seleccionarCurso(nombreCurso) {
+            const select = document.getElementById('cursoSelect');
+            select.value = nombreCurso; // Cambia el valor del select
+            
+            // Actualiza el link de WhatsApp inmediatamente
+            updateWhatsAppLink();
+            
+            // Redirige a la sección de contacto
+            window.location.href = "#contacto";
+        }
+
+        // Menú Móvil
+        const menuBtn = document.getElementById('menuBtn');
+        const navMenu = document.getElementById('navMenu');
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+            navMenu.classList.toggle('flex');
+        });
+
+        // WhatsApp
+        const cursoSelect = document.getElementById('cursoSelect');
+        const waButton = document.getElementById('waButton');
+        const phoneNumber = "5491135110909";
+
+        function updateWhatsAppLink() {
+            const selectedCurso = cursoSelect.value;
+            const message = `¡Hola! 🖐️ Vi su página web y me interesa el curso de ${selectedCurso}.`;
+            waButton.href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        }
+
+        cursoSelect.addEventListener('change', updateWhatsAppLink);
+        
+        // Carrusel automático
+        let currentSlide = 0;
+        const track = document.getElementById('carouselTrack');
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % 4;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }, 5000);
+
+        window.onload = updateWhatsAppLink;
+    </script>
+</body>
+</html>
